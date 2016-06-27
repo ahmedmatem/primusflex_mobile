@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#2579BF"
+    android:minWidth="25px"
+    android:minHeight="25px"
+    android:weightSum="100">
+    <TextView
+        android:text="PRIMUS FLEX Ltd."
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:layout_weight="30"
+        android:textSize="15dp"
+        android:id="@+id/textView2" />
+    <TextView
+        android:text="LOGIN"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:textSize="15dp"
+        android:layout_weight="10"
+        android:id="@+id/textView1" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:textSize="15dp"
+        android:layout_weight="10"
+        android:id="@+id/textViewErrorMessage"
+        android:visibility="gone" />
+    <ProgressBar
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="10"
+        android:indeterminate="true"
+        android:id="@+id/progressBarCircle"
+        android:visibility="gone" />
+    <EditText
+        android:id="@+id/editTextUserName"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:hint="E-mail"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@android:color/white"
+        android:padding="5dp"
+        android:textColor="#000000" />
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="5dp"
+        android:background="#2579BF" />
+    <EditText
+        android:id="@+id/editTextPassword"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:hint="Password"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:inputType="textPassword"
+        android:background="@android:color/white"
+        android:padding="5dp"
+        android:textColor="#000000" />
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="5dp"
+        android:background="#2579BF" />
+    <Button
+        android:id="@+id/btnLogin"
+        android:text="Login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp" />
+</LinearLayout>
