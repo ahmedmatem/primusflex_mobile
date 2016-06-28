@@ -88,14 +88,17 @@ namespace Primusflex.Mobile
 		public partial class Id
 		{
 			
+			// aapt resource value: 0x7f070011
+			public const int btnLogin = 2131165201;
+			
+			// aapt resource value: 0x7f07000c
+			public const int btnOpenCamera = 2131165196;
+			
 			// aapt resource value: 0x7f070010
-			public const int btnLogin = 2131165200;
+			public const int editTextPassword = 2131165200;
 			
 			// aapt resource value: 0x7f07000f
-			public const int editTextPassword = 2131165199;
-			
-			// aapt resource value: 0x7f07000e
-			public const int editTextUserName = 2131165198;
+			public const int editTextUserName = 2131165199;
 			
 			// aapt resource value: 0x7f070001
 			public const int imageView1 = 2131165185;
@@ -121,8 +124,8 @@ namespace Primusflex.Mobile
 			// aapt resource value: 0x7f070009
 			public const int linearLayout4 = 2131165193;
 			
-			// aapt resource value: 0x7f07000d
-			public const int progressBarCircle = 2131165197;
+			// aapt resource value: 0x7f07000e
+			public const int progressBarCircle = 2131165198;
 			
 			// aapt resource value: 0x7f070002
 			public const int textView1 = 2131165186;
@@ -136,8 +139,8 @@ namespace Primusflex.Mobile
 			// aapt resource value: 0x7f07000b
 			public const int textView4 = 2131165195;
 			
-			// aapt resource value: 0x7f07000c
-			public const int textViewErrorMessage = 2131165196;
+			// aapt resource value: 0x7f07000d
+			public const int textViewErrorMessage = 2131165197;
 			
 			static Id()
 			{
@@ -179,6 +182,9 @@ namespace Primusflex.Mobile
 			
 			// aapt resource value: 0x7f050000
 			public const int Hello = 2131034112;
+			
+			// aapt resource value: 0x7f050002
+			public const int openCamera = 2131034114;
 			
 			static String()
 			{

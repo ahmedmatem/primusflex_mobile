@@ -15,5 +15,7 @@ namespace PrimusFlex.Mobile.Android.Common
     public static class Constant
     {
         public const string TokenRequestUrl = "http://primusflexwebservices.azurewebsites.net/token";
+
+        public const string AppGalleryDirName = "PrimusFlex";
     }
 }
