@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="Hello">Hello World, Click Me!</string>
-    <string name="ApplicationName">PrimusFlex.Mobile.Android</string>
-    <string name="openCamera">Open Camera</string>
+    <string name="application_name">PrimusFlex.Mobile.Android</string>
+    <string name="company_name">PRIMUS FLEX Ltd.</string>
+
+    <string name="login_caps">LOGIN</string>
+  
+    <string name="open_camera">Open Camera</string>
+
+    <string name="offline_message">
+      Your device is disconnected now and you are using restricted version.
+    </string>
+
+  <string name="check_net_text">
+    Checking connection ...
+  </string>
 </resources>

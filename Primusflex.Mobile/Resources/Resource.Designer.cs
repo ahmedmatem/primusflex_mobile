@@ -145,6 +145,9 @@ namespace Primusflex.Mobile
 			// aapt resource value: 0x7f07000d
 			public const int textViewErrorMessage = 2131165197;
 			
+			// aapt resource value: 0x7f070012
+			public const int view1 = 2131165202;
+			
 			static Id()
 			{
 				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
@@ -167,6 +170,9 @@ namespace Primusflex.Mobile
 			// aapt resource value: 0x7f030002
 			public const int Login = 2130903042;
 			
+			// aapt resource value: 0x7f030003
+			public const int offline_home = 2130903043;
+			
 			static Layout()
 			{
 				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
@@ -180,14 +186,23 @@ namespace Primusflex.Mobile
 		public partial class String
 		{
 			
-			// aapt resource value: 0x7f050001
-			public const int ApplicationName = 2131034113;
-			
 			// aapt resource value: 0x7f050000
-			public const int Hello = 2131034112;
+			public const int application_name = 2131034112;
+			
+			// aapt resource value: 0x7f050005
+			public const int check_net_text = 2131034117;
+			
+			// aapt resource value: 0x7f050001
+			public const int company_name = 2131034113;
 			
 			// aapt resource value: 0x7f050002
-			public const int openCamera = 2131034114;
+			public const int login_caps = 2131034114;
+			
+			// aapt resource value: 0x7f050004
+			public const int offline_message = 2131034116;
+			
+			// aapt resource value: 0x7f050003
+			public const int open_camera = 2131034115;
 			
 			static String()
 			{

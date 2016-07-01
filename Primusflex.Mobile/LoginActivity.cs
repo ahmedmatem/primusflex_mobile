@@ -13,7 +13,7 @@ using System.Json;
 
 namespace Primusflex.Mobile
 {
-    [Activity(Label = "PrimusFlex", MainLauncher = true, Icon = "@drawable/icon", Theme = "@android:style/Theme.Holo.NoActionBar.Fullscreen")]
+    [Activity(Label = "PrimusFlex", Icon = "@drawable/icon", Theme = "@android:style/Theme.Holo.NoActionBar.Fullscreen")]
     public class LoginActivity : Activity
     {
         protected override void OnCreate(Bundle savedInstanceState)
