@@ -21,6 +21,7 @@ namespace Primusflex.Mobile
             base.OnCreate(savedInstanceState);
 
             SetContentView(Resource.Layout.Login);
+            
 
             var btnLogin = this.FindViewById<Button>(Resource.Id.btnLogin);
             btnLogin.Click += async (sender, e) =>

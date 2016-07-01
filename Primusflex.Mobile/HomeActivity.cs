@@ -1,4 +1,5 @@
 using System;
+using System.Configuration;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,19 +18,31 @@ using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage.Blob;
 using System.IO;
 using Android.Graphics;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure;
+using PrimusFlex.Mobile.Android.Common;
+using System.ComponentModel;
 
 namespace Primusflex.Mobile
 {
     [Activity(Label = "Welcome", Theme = "@style/CustomActionBarTheme")]
     public class HomeActivity : Activity
     {
+        //Parse the connection string and return a reference to the storage account.
+        static CloudStorageAccount storageAccount = CloudStorageAccount.Parse("DefaultEndpointsProtocol=https;AccountName=primusflex;AccountKey=1N+U65eUzC1GpNNuJ9JnMBsziPti12Nopj5WDUHGzDVJJFB2UHkC8boSkZ3li97yQ/qAZ22Ub+Mm2Xtw7diKNw==");
+
+        //Create the blob client object.
+        static CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
+
+        //Get a reference to a container to use for the sample code, and create it if it does not exist.
+        static CloudBlobContainer container = blobClient.GetContainerReference(Constant.IMAGE_STORAGE_CONTAINER_NAME);
+        
         // Use the shared access signature (SAS) to perform container operations
-        string sas = "https://primusflex.blob.core.windows.net/image-container?sv=2015-04-05&sr=c&sig=n85Ud0pAbIHZEXK6tJF1I%2FxnT7AK6ic2mN9t2MI%2FjBE%3D&se=2016-07-01T11%3A56%3A34Z&sp=rwdl";
+        string sas = StorageHelpers.GetContainerSasUri(container);
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-
 
             // disable default ActionBar view and set custom view
             ActionBar.SetCustomView(Resource.Layout.action_bar);
@@ -69,29 +82,38 @@ namespace Primusflex.Mobile
         {
             base.OnActivityResult(requestCode, resultCode, data);
 
-            // Make it available in the gallery
-
-            Intent mediaScanIntent = new Intent(Intent.ActionMediaScannerScanFile);
-            Android.Net.Uri contentUri = Android.Net.Uri.FromFile(App.File);
-            mediaScanIntent.SetData(contentUri);
-            SendBroadcast(mediaScanIntent);
-
-            // upload image from camera to azure blob storage (in photos-container)
-            
             if (resultCode == Result.Ok)
             {
-                //var bitmap = contentUri.Path.LoadAndResizeBitmap(100, 100);
+                // Detect if there is network connection
 
-                await UseContainerSAS(sas);
+                ConnectivityManager connectivityManager = (ConnectivityManager)GetSystemService(ConnectivityService);
+                NetworkInfo activeConnection = connectivityManager.ActiveNetworkInfo;
+                bool isOnline = (activeConnection != null) && activeConnection.IsConnected;
+
+                if (isOnline)
+                {
+                    // upload image from camera to azure blob storage
+
+                    await UploadPhoto(sas);
+                }
+                else
+                {
+                    // Make it available in the gallery
+
+                    Intent mediaScanIntent = new Intent(Intent.ActionMediaScannerScanFile);
+                    Android.Net.Uri contentUri = Android.Net.Uri.FromFile(App.File);
+                    mediaScanIntent.SetData(contentUri);
+                    SendBroadcast(mediaScanIntent);
+                }
             }
         }
 
-        private async Task UseContainerSAS(string sas)
+        private async Task UploadPhoto(string sas)
         {
-            CloudBlobContainer container = new CloudBlobContainer(new System.Uri(sas));
             try
             {
                 //Write operation: write a new blob to the container.
+
                 CloudBlockBlob blob = container.GetBlockBlobReference(App.File.Name);
 
                 await blob.UploadFromFileAsync(App.File.Path);
@@ -100,6 +122,7 @@ namespace Primusflex.Mobile
             {
                 // TODO:
             }
+            
         }
     }
 }

@@ -17,5 +17,7 @@ namespace PrimusFlex.Mobile.Android.Common
         public const string TokenRequestUrl = "http://primusflexwebservices.azurewebsites.net/token";
 
         public const string AppGalleryDirName = "PrimusFlex";
+
+        public const string IMAGE_STORAGE_CONTAINER_NAME = "image-container";
     }
 }

@@ -47,6 +47,9 @@ namespace Primusflex.Mobile
 			// aapt resource value: 0x7f040001
 			public const int blue = 2130968577;
 			
+			// aapt resource value: 0x7f040002
+			public const int generalTextColor = 2130968578;
+			
 			// aapt resource value: 0x7f040000
 			public const int white = 2130968576;
 			

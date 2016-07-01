@@ -3,17 +3,13 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:minWidth="25px"
-    android:minHeight="25px"
     android:background="@color/white">
     <Button
         android:text="@string/openCamera"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/btnOpenCamera"
-        android:layout_marginTop="5dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
+        android:layout_margin="5dp"
         android:background="#323298"
-        android:textColor="@color/white" />
+        android:textColor="@color/generalTextColor" />
 </LinearLayout>

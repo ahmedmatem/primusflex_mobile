@@ -81,6 +81,7 @@
     <Compile Include="Common\BitmapHelpers.cs" />
     <Compile Include="Common\CameraHelpers.cs" />
     <Compile Include="Common\Constant.cs" />
+    <Compile Include="Common\StorageHelpers.cs" />
     <Compile Include="HomeActivity.cs" />
     <Compile Include="LoginActivity.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
