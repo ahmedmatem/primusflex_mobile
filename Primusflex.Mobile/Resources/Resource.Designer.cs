@@ -67,16 +67,19 @@ namespace Primusflex.Mobile
 		{
 			
 			// aapt resource value: 0x7f020000
-			public const int Icon = 2130837504;
+			public const int EditTextStyle = 2130837504;
 			
 			// aapt resource value: 0x7f020001
-			public const int menu_help = 2130837505;
+			public const int Icon = 2130837505;
 			
 			// aapt resource value: 0x7f020002
-			public const int menu_upload = 2130837506;
+			public const int menu_help = 2130837506;
 			
 			// aapt resource value: 0x7f020003
-			public const int selector = 2130837507;
+			public const int menu_upload = 2130837507;
+			
+			// aapt resource value: 0x7f020004
+			public const int selector = 2130837508;
 			
 			static Drawable()
 			{
@@ -91,17 +94,17 @@ namespace Primusflex.Mobile
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f070011
-			public const int btnLogin = 2131165201;
-			
-			// aapt resource value: 0x7f07000c
-			public const int btnOpenCamera = 2131165196;
-			
-			// aapt resource value: 0x7f070010
-			public const int editTextPassword = 2131165200;
+			// aapt resource value: 0x7f070014
+			public const int btnLogin = 2131165204;
 			
 			// aapt resource value: 0x7f07000f
-			public const int editTextUserName = 2131165199;
+			public const int btnOpenCamera = 2131165199;
+			
+			// aapt resource value: 0x7f070013
+			public const int editTextPassword = 2131165203;
+			
+			// aapt resource value: 0x7f070012
+			public const int editTextUserName = 2131165202;
 			
 			// aapt resource value: 0x7f070001
 			public const int imageView1 = 2131165185;
@@ -115,8 +118,8 @@ namespace Primusflex.Mobile
 			// aapt resource value: 0x7f07000a
 			public const int imageView4 = 2131165194;
 			
-			// aapt resource value: 0x7f070000
-			public const int linearLayout1 = 2131165184;
+			// aapt resource value: 0x7f07000c
+			public const int linearLayout1 = 2131165196;
 			
 			// aapt resource value: 0x7f070003
 			public const int linearLayout2 = 2131165187;
@@ -128,7 +131,13 @@ namespace Primusflex.Mobile
 			public const int linearLayout4 = 2131165193;
 			
 			// aapt resource value: 0x7f07000e
-			public const int progressBarCircle = 2131165198;
+			public const int plot = 2131165198;
+			
+			// aapt resource value: 0x7f070011
+			public const int progressBarCircle = 2131165201;
+			
+			// aapt resource value: 0x7f07000d
+			public const int site = 2131165197;
 			
 			// aapt resource value: 0x7f070002
 			public const int textView1 = 2131165186;
@@ -142,11 +151,14 @@ namespace Primusflex.Mobile
 			// aapt resource value: 0x7f07000b
 			public const int textView4 = 2131165195;
 			
-			// aapt resource value: 0x7f07000d
-			public const int textViewErrorMessage = 2131165197;
+			// aapt resource value: 0x7f070010
+			public const int textViewErrorMessage = 2131165200;
 			
-			// aapt resource value: 0x7f070012
-			public const int view1 = 2131165202;
+			// aapt resource value: 0x7f070000
+			public const int updateMenu = 2131165184;
+			
+			// aapt resource value: 0x7f070015
+			public const int view1 = 2131165205;
 			
 			static Id()
 			{
@@ -203,6 +215,9 @@ namespace Primusflex.Mobile
 			
 			// aapt resource value: 0x7f050003
 			public const int open_camera = 2131034115;
+			
+			// aapt resource value: 0x7f050006
+			public const int plot_details_title = 2131034118;
 			
 			static String()
 			{

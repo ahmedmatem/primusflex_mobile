@@ -43,6 +43,21 @@ namespace Primusflex.Mobile
             };
         }
 
+        protected override void OnRestart()
+        {
+            base.OnRestart();
+
+            ResetLoginActivity();
+
+        }
+
+        private void ResetLoginActivity()
+        {
+            this.FindViewById(Resource.Id.progressBarCircle).Visibility = ViewStates.Gone;
+            this.FindViewById<EditText>(Resource.Id.editTextUserName).Text = "";
+            this.FindViewById<EditText>(Resource.Id.editTextPassword).Text = "";
+        }
+
         private async Task<Intent> StartAuthentication(string url, string userName, string password)
         {
             Intent activity;

@@ -50,7 +50,7 @@ namespace Primusflex.Mobile
 
             SetContentView(Resource.Layout.Home);
 
-            var updateMenu = FindViewById<LinearLayout>(Resource.Id.linearLayout1);
+            var updateMenu = FindViewById<LinearLayout>(Resource.Id.updateMenu);
             updateMenu.Selected = true;
 
             CameraHelpers.CreateDirectoryForPictures();

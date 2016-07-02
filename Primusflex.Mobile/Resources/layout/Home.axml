@@ -3,7 +3,46 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:weightSum="100">
+    <TextView
+        android:text="@string/plot_details_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView1"
+        android:textSize="15dp"
+        android:layout_marginTop="5dp"
+        android:gravity="center_horizontal"
+        android:textColor="@color/blue" />
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearLayout1"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:weightSum="100">
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="45dp"
+            android:id="@+id/site"
+            android:hint="Site"
+            android:padding="5dp"
+            android:textColor="#000000"
+            android:background="@drawable/edittextstyle"
+            android:layout_weight="60" />
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="45dp"
+            android:id="@+id/plot"
+            android:hint="Plot #"
+            android:padding="5dp"
+            android:textColor="#000000"
+            android:background="@drawable/edittextstyle"
+            android:inputType="number"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="40" />
+    </LinearLayout>
     <Button
         android:text="@string/open_camera"
         android:layout_width="match_parent"
@@ -11,5 +50,6 @@
         android:id="@+id/btnOpenCamera"
         android:layout_margin="5dp"
         android:background="#323298"
-        android:textColor="@color/generalTextColor" />
+        android:textColor="@color/generalTextColor"
+        android:enabled="false" />
 </LinearLayout>

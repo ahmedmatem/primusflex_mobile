@@ -11,7 +11,8 @@
       Your device is disconnected now and you are using restricted version.
     </string>
 
-  <string name="check_net_text">
-    Checking connection ...
-  </string>
+  <string name="check_net_text">Checking connection ...</string>
+  
+  <string name="plot_details_title">PLOT DETAILS</string>
+  
 </resources>
