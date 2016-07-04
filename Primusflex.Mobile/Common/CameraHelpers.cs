@@ -1,17 +1,6 @@
-using System;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using Android.Provider;
-using Android.Content.PM;
 using Java.IO;
-using PrimusFlex.Mobile.Android.Common;
 
-namespace Primusflex.Mobile.Common
+namespace PrimusFlex.Mobile.Common
 {
     public static class CameraHelpers
     {

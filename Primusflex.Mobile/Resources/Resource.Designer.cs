@@ -119,7 +119,10 @@ namespace Primusflex.Mobile
 			public const int imageView4 = 2131165194;
 			
 			// aapt resource value: 0x7f07000c
-			public const int linearLayout1 = 2131165196;
+			public const int layoutPictureInfo = 2131165196;
+			
+			// aapt resource value: 0x7f070015
+			public const int linearLayout1 = 2131165205;
 			
 			// aapt resource value: 0x7f070003
 			public const int linearLayout2 = 2131165187;
@@ -157,8 +160,8 @@ namespace Primusflex.Mobile
 			// aapt resource value: 0x7f070000
 			public const int updateMenu = 2131165184;
 			
-			// aapt resource value: 0x7f070015
-			public const int view1 = 2131165205;
+			// aapt resource value: 0x7f070016
+			public const int view1 = 2131165206;
 			
 			static Id()
 			{

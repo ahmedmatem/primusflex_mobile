@@ -18,7 +18,7 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/linearLayout1"
+        android:id="@+id/layoutPictureInfo"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:weightSum="100">
@@ -51,5 +51,6 @@
         android:layout_margin="5dp"
         android:background="#323298"
         android:textColor="@color/generalTextColor"
-        android:enabled="false" />
+        android:enabled="false"
+        android:alpha="0.7" />
 </LinearLayout>

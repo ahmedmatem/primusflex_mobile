@@ -1,9 +1,8 @@
 
 
 using Android.Graphics;
-using System.IO;
-
-namespace Primusflex.Mobile.Common
+using Java.IO;
+namespace PrimusFlex.Mobile.Common
 {
     public static class BitmapHelpers
     {

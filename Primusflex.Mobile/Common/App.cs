@@ -1,7 +1,7 @@
 using Java.IO;
 using Android.Graphics;
 
-namespace Primusflex.Mobile.Common
+namespace PrimusFlex.Mobile.Common
 {
     public static class App
     {

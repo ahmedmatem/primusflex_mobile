@@ -1,15 +1,17 @@
 ﻿using System;
+using System.Threading.Tasks;
+using System.Net;
+using System.IO;
+using System.Json;
+
 using Android.App;
 using Android.Content;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.OS;
-using System.Threading.Tasks;
-using System.Net;
-using System.IO;
-using PrimusFlex.Mobile.Android.Common;
-using System.Json;
+
+using PrimusFlex.Mobile.Common;
 
 namespace Primusflex.Mobile
 {

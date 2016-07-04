@@ -10,7 +10,8 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.Net;
-using Primusflex.Mobile.Common;
+
+using PrimusFlex.Mobile.Common;
 
 namespace Primusflex.Mobile
 {
