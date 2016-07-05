@@ -42,6 +42,8 @@ namespace Primusflex.Mobile
                 {
                     StartActivity(activity);
                 }
+                
+                Finish();
             };
         }
 

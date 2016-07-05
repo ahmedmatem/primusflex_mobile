@@ -42,6 +42,8 @@ namespace Primusflex.Mobile
                 Intent offlineHomeActivity = new Intent(this, typeof(OfflineHomeActivity));
                 StartActivity(offlineHomeActivity);
             }
+
+            Finish();
         }
     }
 }

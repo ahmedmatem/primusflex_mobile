@@ -63,8 +63,11 @@ namespace Primusflex.Mobile
             siteName.TextChanged += (sender, e) => TryToEnableCameraButton(sender, e); 
             EditText plotNumber = FindViewById<EditText>(Resource.Id.plot);
             plotNumber.TextChanged += (sender, e) => TryToEnableCameraButton(sender, e);
-
-
+            
+        }
+        public override void OnBackPressed()
+        {
+            // Do nothing
         }
 
         private void TryToEnableCameraButton(object sender, EventArgs e)
