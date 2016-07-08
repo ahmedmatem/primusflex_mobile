@@ -13,10 +13,10 @@ using Android.Provider;
 using Android.Net;
 using Android.Graphics;
 
-using Microsoft.WindowsAzure.Storage;
-using Microsoft.WindowsAzure.Storage.Blob;
 
 using PrimusFlex.Mobile.Common;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace Primusflex.Mobile
 {
@@ -65,6 +65,7 @@ namespace Primusflex.Mobile
             plotNumber.TextChanged += (sender, e) => TryToEnableCameraButton(sender, e);
             
         }
+
         public override void OnBackPressed()
         {
             // Do nothing
