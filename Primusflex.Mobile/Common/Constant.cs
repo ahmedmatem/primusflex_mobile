@@ -7,6 +7,7 @@ namespace PrimusFlex.Mobile.Common
         public const string STORAGE_URL = "http://primusflexwebservices.azurewebsites.net/api/storage";
 
         public const string AppGalleryDirName = "PrimusFlex";
+        public static string APPLICATION_NAME = "PrimusFlex.Mobile";
 
         public const string IMAGE_STORAGE_CONTAINER_NAME = "image-container";
 
