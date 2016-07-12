@@ -12,12 +12,18 @@ using Android.Widget;
 using Android.Net;
 
 using PrimusFlex.Mobile.Common;
+using Android.Telephony;
+using System.Net;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace Primusflex.Mobile
 {
     [Activity(Label = "PrimusFlex", MainLauncher = true, Icon = "@drawable/icon")]
     public class StartActivity : Activity
     {
+        protected string access_token;
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -28,12 +34,27 @@ namespace Primusflex.Mobile
             NetworkInfo activeConnection = connectivityManager.ActiveNetworkInfo;
             bool isOnline = (activeConnection != null) && activeConnection.IsConnected;
 
+            var phoneState = new PrimusFlex.Mobile.Common.PhoneState((TelephonyManager)GetSystemService(TelephonyService));
+            var imei = phoneState.IMEI();
+
             if (isOnline)
             {
-                // Go to Login activity
+                // if phome IMEI already is saved try to login by(phone)IMEI
+                
+                if (TryToLoginByIMEI(imei))
+                {
+                    Intent homeActivity = new Intent(this, typeof(HomeActivity));
+                    homeActivity.PutExtra("access_token", access_token);
+                    StartActivity(homeActivity);
+                }
+                else
+                {
+                    // Go to Login activity
 
-                Intent loginActivity = new Intent(this, typeof(LoginActivity));
-                StartActivity(loginActivity);
+                    Intent loginActivity = new Intent(this, typeof(LoginActivity));
+                    StartActivity(loginActivity);
+
+                }
             }
             else
             {
@@ -44,6 +65,46 @@ namespace Primusflex.Mobile
             }
 
             Finish();
+        }
+
+        private bool TryToLoginByIMEI(string imei)
+        {
+            string responseFromServer;
+            var uri = Constant.REMOTE_IMEI_LOGIN_URI + "?imei=" + imei;
+
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
+
+            try
+            {
+                HttpWebResponse response = request.GetResponse() as HttpWebResponse;
+                using (Stream stream = response.GetResponseStream())
+                {
+                    if (response.StatusCode == HttpStatusCode.OK)
+                    {
+                        // read response content
+                        using (StreamReader reader = new StreamReader(stream))
+                        {
+                            responseFromServer = reader.ReadToEnd();
+                            access_token = ExtractAccessToken(responseFromServer);
+
+                            return true;
+                        }
+                    }
+                }
+            }
+            catch(WebException ex)
+            {
+                var pageContent = new StreamReader(ex.Response.GetResponseStream())
+                          .ReadToEnd();
+            }
+
+            return false;
+        }
+
+        private string ExtractAccessToken(string responseFromServer)
+        {
+            var value = responseFromServer.Split(new char[] { ':', '\"', '{', '}' }, StringSplitOptions.RemoveEmptyEntries);
+            return value.Last();
         }
     }
 }

@@ -17,6 +17,7 @@ using Android.Graphics;
 using PrimusFlex.Mobile.Common;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
+using Android.Telephony;
 
 namespace Primusflex.Mobile
 {
@@ -63,6 +64,8 @@ namespace Primusflex.Mobile
             siteName.TextChanged += (sender, e) => TryToEnableCameraButton(sender, e); 
             EditText plotNumber = FindViewById<EditText>(Resource.Id.plot);
             plotNumber.TextChanged += (sender, e) => TryToEnableCameraButton(sender, e);
+                      
+
             
         }
 

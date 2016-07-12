@@ -11,25 +11,25 @@ using Android.Views;
 using Android.Widget;
 using Android.Telephony;
 
-namespace Primusflex.Mobile.Common
+namespace PrimusFlex.Mobile.Common
 {
     public class PhoneState
     {
-        public static TelephonyManager telehonyManager;
+        public TelephonyManager telehonyManager;
 
-        public PhoneState(Activity activity, string telephonyService)
+        public PhoneState(TelephonyManager telehonyManager)
         {
-            telehonyManager = (TelephonyManager) activity.ApplicationContext.GetSystemService(telephonyService);
+            this.telehonyManager = telehonyManager;
         }
 
         // Get telephone number
-        public static string TelephoneNumber()
+        public string TelephoneNumber()
         {
             return telehonyManager.Line1Number;
         }
 
         // Get IMEI Number
-        public static string IMenuItem()
+        public string IMEI()
         {
             return telehonyManager.DeviceId;
         }

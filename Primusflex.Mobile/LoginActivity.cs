@@ -13,6 +13,7 @@ using Android.OS;
 
 using PrimusFlex.Mobile.Common;
 using Primusflex.Mobile.Common;
+using Android.Telephony;
 
 namespace Primusflex.Mobile
 {
@@ -41,9 +42,35 @@ namespace Primusflex.Mobile
                 var activity = await Authentication.Start(this, url, userName, password);
                 if (activity != null)
                 {
+                    // save phone imei for next time login
+
+                    string imei = new PrimusFlex.Mobile.Common.PhoneState((TelephonyManager)GetSystemService(TelephonyService)).IMEI();
+                    SavePhone(imei);
+
+                    // start activity
+                    
                     StartActivity(activity);
                 }
             };
+        }
+
+        private void SavePhone(string imei)
+        {
+            var uri = Constant.LOGIN_SERVICE_URI + "savephone";
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
+            var postData = "imei=" + imei;
+            
+            request.Method = "POST";
+            request.ContentType = "application/json";
+            request.ContentLength = postData.Length;
+
+            StreamWriter requestWriter = new StreamWriter(request.GetRequestStream());
+            requestWriter.Write(postData);
+            requestWriter.Close();
+
+            var response = (HttpWebResponse)request.GetResponse();
+
+            var responseString = new StreamReader(response.GetResponseStream()).ReadToEnd();
         }
 
         protected override void OnRestart()
