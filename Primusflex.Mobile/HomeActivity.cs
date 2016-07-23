@@ -12,12 +12,13 @@ using Android.Widget;
 using Android.Provider;
 using Android.Net;
 using Android.Graphics;
+using Android.Telephony;
 
-
-using PrimusFlex.Mobile.Common;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
-using Android.Telephony;
+
+using PrimusFlex.Mobile.Common;
+using Primusflex.Mobile.Common;
 
 namespace Primusflex.Mobile
 {
@@ -26,18 +27,14 @@ namespace Primusflex.Mobile
     {
         // Access Token
         string accessToken;
-
-        //Parse the connection string and return a reference to the storage account.
-        static CloudStorageAccount storageAccount = CloudStorageAccount.Parse("DefaultEndpointsProtocol=https;AccountName=primusflex;AccountKey=1N+U65eUzC1GpNNuJ9JnMBsziPti12Nopj5WDUHGzDVJJFB2UHkC8boSkZ3li97yQ/qAZ22Ub+Mm2Xtw7diKNw==");
-
-        //Create the blob client object.
-        static CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
-
-        //Get a reference to a container to use for the sample code, and create it if it does not exist.
-        static CloudBlobContainer container = blobClient.GetContainerReference(Constant.IMAGE_STORAGE_CONTAINER_NAME);
         
-        // Use the shared access signature (SAS) to perform container operations
-        string sas = StorageHelpers.GetContainerSasUri(container);
+        static CloudStorageAccount storageAccount;
+        
+        static CloudBlobClient blobClient;
+
+        static CloudBlobContainer container;
+        
+        string sas;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -51,6 +48,18 @@ namespace Primusflex.Mobile
 
             // get access token
             accessToken = Intent.GetStringExtra("access_token");
+
+            //Parse the connection string and return a reference to the storage account.
+            storageAccount = StorageHelpers.StorageAccount(accessToken);
+
+            //Create the blob client object.
+            blobClient = storageAccount.CreateCloudBlobClient();
+
+            //Get a reference to a container to use for the sample code, and create it if it does not exist.
+            container = blobClient.GetContainerReference(Constant.IMAGE_STORAGE_CONTAINER_NAME);
+
+            // Use the shared access signature (SAS) to perform container operations
+            sas = StorageHelpers.GetContainerSasUri(container);
 
             var updateMenu = FindViewById<LinearLayout>(Resource.Id.updateMenu);
             updateMenu.Selected = true;

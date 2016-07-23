@@ -135,6 +135,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\AccountStoragePair.cs" />
     <Compile Include="Common\App.cs" />
     <Compile Include="Common\Authentication.cs" />
     <Compile Include="Common\BitmapHelpers.cs" />

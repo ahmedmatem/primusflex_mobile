@@ -4,7 +4,10 @@ namespace PrimusFlex.Mobile.Common
     {
         // web services
         public const string TokenRequestUrl = "http://primusflexwebservices.azurewebsites.net/token";
+
         public const string STORAGE_URL = "http://primusflexwebservices.azurewebsites.net/api/storage";
+        public const string ACCOUNT_URL = "http://primusflexwebservices.azurewebsites.net/api/account";
+
         public static string REMOTE_IMEI_LOGIN_URI = "http://primusflexwebservices.azurewebsites.net/api/login/byimei";
         public static string LOGIN_SERVICE_URI = "http://primusflexwebservices.azurewebsites.net/api/login/";
 
