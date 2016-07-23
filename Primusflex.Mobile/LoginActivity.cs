@@ -30,8 +30,8 @@ namespace Primusflex.Mobile
             var btnLogin = this.FindViewById<Button>(Resource.Id.btnLogin);
             btnLogin.Click += async (sender, e) =>
             {
-                // start loading circle image (progress bar)
                 FindViewById<TextView>(Resource.Id.textViewErrorMessage).Visibility = ViewStates.Gone;
+                // start loading circle image (progress bar)
                 var progressBarCircle = FindViewById<ProgressBar>(Resource.Id.progressBarCircle);
                 progressBarCircle.Visibility = ViewStates.Visible;
 
@@ -45,23 +45,24 @@ namespace Primusflex.Mobile
                     // save phone imei for next time login
 
                     string imei = new PrimusFlex.Mobile.Common.PhoneState((TelephonyManager)GetSystemService(TelephonyService)).IMEI();
-                    SavePhone(imei);
+                    SavePhone(imei, activity.GetStringExtra("access_token"));
 
                     // start activity
-                    
+
                     StartActivity(activity);
                 }
             };
         }
 
-        private void SavePhone(string imei)
+        private void SavePhone(string imei, string access_token)
         {
             var uri = Constant.LOGIN_SERVICE_URI + "savephone";
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
+            request.Headers.Add("Authorization", "Bearer " + access_token);
             var postData = "imei=" + imei;
             
             request.Method = "POST";
-            request.ContentType = "application/json";
+            request.ContentType = "application/x-www-form-urlencoded";
             request.ContentLength = postData.Length;
 
             StreamWriter requestWriter = new StreamWriter(request.GetRequestStream());

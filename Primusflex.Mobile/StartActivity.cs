@@ -28,41 +28,44 @@ namespace Primusflex.Mobile
         {
             base.OnCreate(savedInstanceState);
 
-            // Detect if there is network connection
+            Intent loginActivity = new Intent(this, typeof(LoginActivity));
+            StartActivity(loginActivity);
 
-            ConnectivityManager connectivityManager = (ConnectivityManager)GetSystemService(ConnectivityService);
-            NetworkInfo activeConnection = connectivityManager.ActiveNetworkInfo;
-            bool isOnline = (activeConnection != null) && activeConnection.IsConnected;
+            //// Detect if there is network connection
 
-            var phoneState = new PrimusFlex.Mobile.Common.PhoneState((TelephonyManager)GetSystemService(TelephonyService));
-            var imei = phoneState.IMEI();
+            //ConnectivityManager connectivityManager = (ConnectivityManager)GetSystemService(ConnectivityService);
+            //NetworkInfo activeConnection = connectivityManager.ActiveNetworkInfo;
+            //bool isOnline = (activeConnection != null) && activeConnection.IsConnected;
 
-            if (isOnline)
-            {
-                // if phome IMEI already is saved try to login by(phone)IMEI
-                
-                if (TryToLoginByIMEI(imei))
-                {
-                    Intent homeActivity = new Intent(this, typeof(HomeActivity));
-                    homeActivity.PutExtra("access_token", access_token);
-                    StartActivity(homeActivity);
-                }
-                else
-                {
-                    // Go to Login activity
+            //var phoneState = new PrimusFlex.Mobile.Common.PhoneState((TelephonyManager)GetSystemService(TelephonyService));
+            //var imei = phoneState.IMEI();
 
-                    Intent loginActivity = new Intent(this, typeof(LoginActivity));
-                    StartActivity(loginActivity);
+            //if (isOnline)
+            //{
+            //    // if phome IMEI already is saved try to login by(phone)IMEI
 
-                }
-            }
-            else
-            {
-                // Go to OfflineHome activity
+            //    if (TryToLoginByIMEI(imei))
+            //    {
+            //        Intent homeActivity = new Intent(this, typeof(HomeActivity));
+            //        homeActivity.PutExtra("access_token", access_token);
+            //        StartActivity(homeActivity);
+            //    }
+            //    else
+            //    {
+            //        // Go to Login activity
 
-                Intent offlineHomeActivity = new Intent(this, typeof(OfflineHomeActivity));
-                StartActivity(offlineHomeActivity);
-            }
+            //        Intent loginActivity = new Intent(this, typeof(LoginActivity));
+            //        StartActivity(loginActivity);
+
+            //    }
+            //}
+            //else
+            //{
+            //    // Go to OfflineHome activity
+
+            //    Intent offlineHomeActivity = new Intent(this, typeof(OfflineHomeActivity));
+            //    StartActivity(offlineHomeActivity);
+            //}
 
             Finish();
         }
