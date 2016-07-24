@@ -7,12 +7,21 @@
   
     <string name="open_camera">Open Camera</string>
 
+  <!-- Messages -->
     <string name="offline_message">
       Your device is disconnected now and you are using restricted version.
     </string>
 
+  <!-- Texts -->
   <string name="check_net_text">Checking connection ...</string>
   
+  <!-- Titles -->
   <string name="plot_details_title">PLOT DETAILS</string>
+  
+  <!-- Prompts -->
+  <string name="kitchen_model_prompt">Model</string>
+  
+  <!-- Hints -->
+  <string name="plot_number_hint">Plot</string>
   
 </resources>

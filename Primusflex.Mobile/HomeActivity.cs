@@ -27,7 +27,14 @@ namespace Primusflex.Mobile
     {
         // Access Token
         string accessToken;
-        
+
+        // Kitchen Plot Details
+        string siteName;
+        string plotNumber;
+        string picName;
+        string kitchenModelName;
+
+        // Cloud Storage
         static CloudStorageAccount storageAccount;
         
         static CloudBlobClient blobClient;
@@ -71,11 +78,28 @@ namespace Primusflex.Mobile
 
             EditText siteName = FindViewById<EditText>(Resource.Id.site);
             siteName.TextChanged += (sender, e) => TryToEnableCameraButton(sender, e); 
+
             EditText plotNumber = FindViewById<EditText>(Resource.Id.plot);
             plotNumber.TextChanged += (sender, e) => TryToEnableCameraButton(sender, e);
-                      
 
+            // Set spinner for kitchen models
+
+            Spinner spinner = FindViewById<Spinner>(Resource.Id.spinner1);
+            ArrayAdapter adapter = new ArrayAdapter(this, Android.Resource.Layout.SimpleSpinnerDropDownItem, Constant.KITCHEN_MODELS);
+            spinner.Adapter = adapter;
+
+            // spinner default value
+            kitchenModelName = Constant.KITCHEN_MODELS[0];
+
+            // add spinner ItemSelected Event Handler
+            spinner.ItemSelected += new EventHandler<AdapterView.ItemSelectedEventArgs>(SpinnerItemSelected);
             
+        }
+
+        private void SpinnerItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
+        {
+            Spinner spn = (Spinner) sender;
+            kitchenModelName = spn.GetItemAtPosition(e.Position).ToString();
         }
 
         public override void OnBackPressed()
@@ -112,8 +136,13 @@ namespace Primusflex.Mobile
 
         private void TakeAPicture(object sender, EventArgs e)
         {
+            // Collect plot details
+            siteName = FindViewById<EditText>(Resource.Id.site).Text;
+            plotNumber = FindViewById<EditText>(Resource.Id.plot).Text;
+            picName = String.Format("img_sn{0}_pl{1}_m{2}_d{3}.jpg", siteName, plotNumber, kitchenModelName, DateTime.Now.ToString("yyyyMMddHHmmss"));
+            
             Intent intent = new Intent(MediaStore.ActionImageCapture);
-            App.File = new Java.IO.File(App.Dir, String.Format("img_{0}.jpg", Guid.NewGuid()));
+            App.File = new Java.IO.File(App.Dir,picName);
             intent.PutExtra(MediaStore.ExtraOutput, Android.Net.Uri.FromFile(App.File));
             StartActivityForResult(intent, 0);
         }
@@ -132,17 +161,8 @@ namespace Primusflex.Mobile
 
                 if (isOnline)
                 {
-                    /* 
-                     * collect picture info and
-                     * save picture information to azure sql server
-                     * info: SiteName, PlotNo, PictureName
-                     */
-
-                    string siteName = FindViewById<EditText>(Resource.Id.site).Text;
-                    string plotNumber = FindViewById<EditText>(Resource.Id.plot).Text;
-                    string picName = App.File.Name;
-
-                    SavePictureInfo(siteName, plotNumber, picName);
+                    // save imige information in azure sql database
+                    SaveImage(siteName, plotNumber, picName, kitchenModelName);
 
                     // upload image from camera to azure blob storage
 
@@ -168,20 +188,23 @@ namespace Primusflex.Mobile
             }
         }
 
-        private void SavePictureInfo(string siteName, string plotNumber, string picName)
+        private void SaveImage(string siteName, string plotNumber, string picName, string kitchenModelName)
         {
-            /*
-             * use storage web service to save picture information
-             * http://primusflexwebservices.azurewebsites.net/api/storage/pictureinfo
-             */
-
-            System.Uri uri = new System.Uri(Constant.STORAGE_URL + "/pictureInfo");
-            WebClient client = new WebClient();
-            string postString = string.Format("SiteName={0}&PlotNumber={1}&PictureName={2}", siteName, plotNumber, picName);
-            byte[] postBytes = Encoding.UTF8.GetBytes(postString);
-            client.Headers.Add("Authorization", "Bearer " + accessToken);
-            client.Headers.Add(HttpRequestHeader.ContentType, "application/x-www-form-urlencoded; charset=utf-8");
-            client.UploadData(uri, postBytes);
+            System.Uri uri = new System.Uri(Constant.STORAGE_URL + "/saveimage");
+            string postData = string.Format("SiteName={0}&PlotNumber={1}&ImageName={2}&KitchenModel={3}", siteName, plotNumber, picName, kitchenModelName);
+            try
+            {
+                using (WebClient wc = new WebClient())
+                {
+                    wc.Headers.Add("Content-Type", "application/x-www-form-urlencoded");
+                    wc.Headers.Add("Authorization", "Bearer " + accessToken);
+                    wc.UploadString(uri, "POST", postData);
+                }
+            }
+            catch(WebException e)
+            {
+                var errorMessage = (new StreamReader(e.Response.GetResponseStream())).ReadToEnd();
+            }
         }
 
         private async Task UploadPhoto(string sas)

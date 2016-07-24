@@ -59,7 +59,7 @@ namespace Primusflex.Mobile
             var uri = Constant.LOGIN_SERVICE_URI + "savephone";
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
             request.Headers.Add("Authorization", "Bearer " + access_token);
-            var postData = "imei=" + imei;
+            var postData = string.Format("imei={0}&accessToken={1}", imei, access_token);
             
             request.Method = "POST";
             request.ContentType = "application/x-www-form-urlencoded";

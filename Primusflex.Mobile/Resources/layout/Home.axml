@@ -30,18 +30,24 @@
             android:padding="5dp"
             android:textColor="#000000"
             android:background="@drawable/edittextstyle"
-            android:layout_weight="60" />
+            android:layout_weight="50" />
         <EditText
             android:layout_width="0dp"
             android:layout_height="45dp"
             android:id="@+id/plot"
-            android:hint="Plot #"
+            android:hint="@string/plot_number_hint"
             android:padding="5dp"
             android:textColor="#000000"
             android:background="@drawable/edittextstyle"
             android:inputType="number"
             android:layout_marginLeft="5dp"
-            android:layout_weight="40" />
+            android:layout_weight="15" />
+        <Spinner
+            android:layout_width="0dp"
+            android:layout_height="45dp"
+            android:id="@+id/spinner1"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="35" />
     </LinearLayout>
     <Button
         android:text="@string/open_camera"
@@ -53,9 +59,4 @@
         android:textColor="@color/generalTextColor"
         android:enabled="false"
         android:alpha="0.7" />
-    <TextView
-        android:text="Text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView2" />
 </LinearLayout>
