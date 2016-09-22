@@ -3,6 +3,7 @@ using System.Text;
 using System.Net;
 using System.IO;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 using Android.App;
 using Android.Content;
@@ -19,6 +20,8 @@ using Microsoft.WindowsAzure.Storage.Blob;
 
 using PrimusFlex.Mobile.Common;
 using Primusflex.Mobile.Common;
+using Newtonsoft.Json;
+using Primusflex.Mobile.Models;
 
 namespace Primusflex.Mobile
 {
@@ -29,10 +32,14 @@ namespace Primusflex.Mobile
         string accessToken;
 
         // Kitchen Plot Details
+        string userName;
         string siteName;
         string plotNumber;
         string picName;
         string kitchenModelName;
+
+        // Table
+        TableLayout table;
 
         // Cloud Storage
         static CloudStorageAccount storageAccount;
@@ -56,6 +63,8 @@ namespace Primusflex.Mobile
             // get access token
             accessToken = Intent.GetStringExtra("access_token");
 
+            userName = Intent.GetStringExtra("user_name");
+
             //Parse the connection string and return a reference to the storage account.
             storageAccount = StorageHelpers.StorageAccount(accessToken);
 
@@ -76,6 +85,9 @@ namespace Primusflex.Mobile
             Button btnOpenCamera = FindViewById<Button>(Resource.Id.btnOpenCamera);
             btnOpenCamera.Click += TakeAPicture;
 
+            Button btnRefresh = (Button)FindViewById(Resource.Id.btnRefresh);
+            btnRefresh.Click += UpdateLastKitchenInfo;
+
             EditText siteName = FindViewById<EditText>(Resource.Id.site);
             siteName.TextChanged += (sender, e) => TryToEnableCameraButton(sender, e); 
 
@@ -86,6 +98,7 @@ namespace Primusflex.Mobile
 
             Spinner spinner = FindViewById<Spinner>(Resource.Id.spinner1);
             ArrayAdapter adapter = new ArrayAdapter(this, Android.Resource.Layout.SimpleSpinnerDropDownItem, Constant.KITCHEN_MODELS);
+            adapter.SetDropDownViewResource(Android.Resource.Layout.SimpleSpinnerDropDownItem);
             spinner.Adapter = adapter;
 
             // spinner default value
@@ -93,7 +106,74 @@ namespace Primusflex.Mobile
 
             // add spinner ItemSelected Event Handler
             spinner.ItemSelected += new EventHandler<AdapterView.ItemSelectedEventArgs>(SpinnerItemSelected);
+
+            table = this.FindViewById<TableLayout>(Resource.Id.tableLayout1);
+
+            // TODO: Add last day uploads review
+            AddLastKitchenInformation(userName);
             
+        }
+
+        private void UpdateLastKitchenInfo(Object sender, EventArgs args)
+        {
+            table.RemoveAllViews();
+            AddLastKitchenInformation(userName);
+        }
+
+        private void AddLastKitchenInformation(string userName)
+        {
+            var lastKitchenInfo = GetLastDayKitchenInfo(userName);
+            if (lastKitchenInfo != null)
+            {
+                TableLayout.LayoutParams layoutParameters = new TableLayout.LayoutParams(
+                    TableLayout.LayoutParams.MatchParent, TableLayout.LayoutParams.WrapContent);
+                layoutParameters.SetMargins(5, 5, 5, 5);
+                layoutParameters.Weight = 1;
+
+                foreach (var lki in lastKitchenInfo)
+                {
+                    TableRow tr = new TableRow(this);
+                    tr.LayoutParameters = layoutParameters;
+
+                    TextView site = new TextView(this);
+                    site.Text = lki.SiteName;
+                    tr.AddView(site);
+
+                    TextView plotNo = new TextView(this);
+                    plotNo.Text = lki.PlotNumber;
+                    tr.AddView(plotNo);
+
+                    TextView kitchenModel = new TextView(this);
+                    kitchenModel.Text = lki.KitchenModel.ToString();
+                    tr.AddView(kitchenModel);
+
+                    TextView imgNo = new TextView(this);
+                    imgNo.Text = lki.ImageNumber.ToString() + (lki.ImageNumber == 1 ? "pic" : "pics");
+                    tr.AddView(imgNo);
+
+                    table.AddView(tr, new TableLayout.LayoutParams(TableLayout.LayoutParams.MatchParent,
+                        TableLayout.LayoutParams.WrapContent));
+                }
+            }
+        }
+
+        private List<KitchenInfoModel> GetLastDayKitchenInfo(string username)
+        {
+            string uri = Constant.STORAGE_URL + "/lastkitcheninfo?username=" + username;
+            WebRequest request = WebRequest.Create(uri);
+            request.Headers.Add("Authorization", "Bearer " + accessToken);
+
+            using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
+            {
+                if(response.StatusCode == HttpStatusCode.OK)
+                {
+                    var responseFromServer = new StreamReader(response.GetResponseStream()).ReadToEnd();
+                    var resultAsObject = JsonConvert.DeserializeObject<List<KitchenInfoModel>>(responseFromServer);
+                    return resultAsObject;
+                }
+            }
+
+            return null;
         }
 
         private void SpinnerItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
@@ -162,7 +242,7 @@ namespace Primusflex.Mobile
                 if (isOnline)
                 {
                     // save imige information in azure sql database
-                    SaveImage(siteName, plotNumber, picName, kitchenModelName);
+                    SaveImage(Intent.GetStringExtra("user_name") , siteName, plotNumber, picName, kitchenModelName);
 
                     // upload image from camera to azure blob storage
 
@@ -170,7 +250,7 @@ namespace Primusflex.Mobile
                     await UploadPhoto(sas);
 
                     // delete picture from gallery
-
+                    // TODO: delete does not work correctly!
                     if (App.File.Exists())
                     {
                         App.File.Delete();
@@ -188,10 +268,10 @@ namespace Primusflex.Mobile
             }
         }
 
-        private void SaveImage(string siteName, string plotNumber, string picName, string kitchenModelName)
+        private void SaveImage(string userName, string siteName, string plotNumber, string picName, string kitchenModelName)
         {
             System.Uri uri = new System.Uri(Constant.STORAGE_URL + "/saveimage");
-            string postData = string.Format("SiteName={0}&PlotNumber={1}&ImageName={2}&KitchenModel={3}", siteName, plotNumber, picName, kitchenModelName);
+            string postData = string.Format("UserName={0}&SiteName={1}&PlotNumber={2}&ImageName={3}&KitchenModel={4}", userName, siteName, plotNumber, picName, kitchenModelName);
             try
             {
                 using (WebClient wc = new WebClient())

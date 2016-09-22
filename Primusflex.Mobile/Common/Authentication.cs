@@ -54,6 +54,7 @@ namespace Primusflex.Mobile.Common
                     // redirect to HomeActivity after successful login
                     activity = new Intent(currActivity, typeof(HomeActivity));
                     activity.PutExtra("access_token", (string)jsonDoc["access_token"]);
+                    activity.PutExtra("user_name", userName);
 
                     // save 
                 }

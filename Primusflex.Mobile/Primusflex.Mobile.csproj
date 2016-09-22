@@ -145,10 +145,12 @@
     <Compile Include="Common\StorageHelpers.cs" />
     <Compile Include="HomeActivity.cs" />
     <Compile Include="LoginActivity.cs" />
+    <Compile Include="Models\KitchenInfoModel.cs" />
     <Compile Include="OfflineHomeActivity.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StartActivity.cs" />
+    <Compile Include="Types\KitchenType.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

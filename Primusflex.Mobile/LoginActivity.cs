@@ -45,7 +45,8 @@ namespace Primusflex.Mobile
                     // save phone imei for next time login
 
                     string imei = new PrimusFlex.Mobile.Common.PhoneState((TelephonyManager)GetSystemService(TelephonyService)).IMEI();
-                    SavePhone(imei, activity.GetStringExtra("access_token"));
+                    var access_token = activity.GetStringExtra("access_token");
+                    SavePhone(imei, access_token);
 
                     // start activity
 
@@ -55,7 +56,7 @@ namespace Primusflex.Mobile
         }
 
         private void SavePhone(string imei, string access_token)
-        {
+        {            
             var uri = Constant.LOGIN_SERVICE_URI + "savephone";
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
             request.Headers.Add("Authorization", "Bearer " + access_token);

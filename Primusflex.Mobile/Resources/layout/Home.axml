@@ -60,4 +60,31 @@
         android:textColor="@color/generalTextColor"
         android:enabled="false"
         android:alpha="0.7" />
+    <Button
+          android:text="Last day kitchen"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:background="#0077b3"
+          android:textColor="@color/generalTextColor"
+          android:layout_margin="5dp"
+          android:paddingLeft="15dp"
+          android:paddingRight="15dp"
+          android:id="@+id/btnRefresh" />
+
+  <ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:gravity="center|left"
+      android:orientation="vertical">
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tableLayout1"
+            android:stretchColumns="1"
+            android:padding="5dp" />
+    </LinearLayout>
+  </ScrollView>
 </LinearLayout>

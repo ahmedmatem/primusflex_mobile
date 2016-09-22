@@ -22,7 +22,7 @@ namespace Primusflex.Mobile
     [Activity(Label = "PrimusFlex", MainLauncher = true, Icon = "@drawable/icon")]
     public class StartActivity : Activity
     {
-        protected string access_token;
+        protected string access_token, userName;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -45,6 +45,7 @@ namespace Primusflex.Mobile
                 {
                     Intent homeActivity = new Intent(this, typeof(HomeActivity));
                     homeActivity.PutExtra("access_token", access_token);
+                    homeActivity.PutExtra("user_name", userName);
                     StartActivity(homeActivity);
                 }
                 else
@@ -86,6 +87,7 @@ namespace Primusflex.Mobile
                         {
                             responseFromServer = reader.ReadToEnd();
                             access_token = ExtractAccessToken(responseFromServer);
+                            userName = ExtractUserName(responseFromServer);
 
                             return true;
                         }
@@ -102,6 +104,12 @@ namespace Primusflex.Mobile
         }
 
         private string ExtractAccessToken(string responseFromServer)
+        {
+            var value = responseFromServer.Split(new char[] { ':', '\"', '{', '}' }, StringSplitOptions.RemoveEmptyEntries);
+            return value[1];
+        }
+
+        private string ExtractUserName(string responseFromServer)
         {
             var value = responseFromServer.Split(new char[] { ':', '\"', '{', '}' }, StringSplitOptions.RemoveEmptyEntries);
             return value.Last();
