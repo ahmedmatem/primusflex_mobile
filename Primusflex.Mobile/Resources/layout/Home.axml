@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
+    android:id="@+id/homeLayout"
     android:weightSum="100">
     <TextView
         android:text="@string/plot_details_title"
@@ -22,6 +23,13 @@
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:weightSum="100">
+        <Spinner
+            android:layout_width="0dp"
+            android:layout_height="45dp"
+            android:id="@+id/siteSpinner"
+            android:layout_weight="50"
+            android:background="@drawable/edittextstyle"
+            android:layout_marginLeft="5dp" />
         <EditText
             android:layout_width="0dp"
             android:layout_height="45dp"
@@ -30,7 +38,8 @@
             android:padding="5dp"
             android:textColor="#000000"
             android:background="@drawable/edittextstyle"
-            android:layout_weight="50" />
+            android:layout_weight="50"
+            android:visibility="gone" />
         <EditText
             android:layout_width="0dp"
             android:layout_height="45dp"
@@ -39,16 +48,40 @@
             android:padding="5dp"
             android:textColor="#000000"
             android:background="@drawable/edittextstyle"
-            android:inputType="number"
             android:layout_marginLeft="5dp"
             android:layout_weight="15" />
         <Spinner
             android:layout_width="0dp"
             android:layout_height="45dp"
-            android:id="@+id/spinner1"
+            android:id="@+id/kitchenSpinner"
             android:background="@drawable/edittextstyle"
             android:layout_marginLeft="5dp"
             android:layout_weight="35" />
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearLayout2"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="10dp">
+        <CheckBox
+            android:text="CheckBox"
+            android:id="@+id/checkBox1"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginRight="5dp" />
+        <TextView
+            android:text="@string/site_not_in_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/checkBoxLabel"
+            android:textSize="15dp"
+            android:layout_marginTop="5dp"
+            android:gravity="left"
+            android:textColor="@color/blue" />
     </LinearLayout>
     <Button
         android:text="@string/open_camera"
@@ -60,31 +93,59 @@
         android:textColor="@color/generalTextColor"
         android:enabled="false"
         android:alpha="0.7" />
-    <Button
-          android:text="Last day kitchen"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:background="#0077b3"
-          android:textColor="@color/generalTextColor"
-          android:layout_margin="5dp"
-          android:paddingLeft="15dp"
-          android:paddingRight="15dp"
-          android:id="@+id/btnRefresh" />
-
-  <ScrollView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
     <LinearLayout
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:gravity="center|left"
-      android:orientation="vertical">
-        <TableLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearLayoutLastKitchenAndHistory"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:weightSum="100">
+        <Button
+            android:text="Last kitchen"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/SimpleButton"
+            android:id="@+id/btnRefresh"
+            android:layout_marginRight="2dp"
+            android:layout_weight="50" />
+        <Button
+            android:text="History"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="#ff3300"
+            android:textColor="@color/generalTextColor"
+            android:layout_marginLeft="2dp"
+            android:id="@+id/btnHistory"
+            android:layout_weight="50 " />
+    </LinearLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/tableLayout1"
-            android:stretchColumns="1"
-            android:padding="5dp" />
-    </LinearLayout>
-  </ScrollView>
+            android:gravity="center|left"
+            android:id="@+id/scroolViewLinearLayout"
+            android:orientation="vertical">
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tableLayout1"
+                android:stretchColumns="1"
+                android:padding="5dp" />
+        </LinearLayout>
+    </ScrollView>
+    <GridView
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:columnWidth="160dp"
+        android:numColumns="auto_fit"
+        android:verticalSpacing="5dp"
+        android:horizontalSpacing="5dp"
+        android:stretchMode="columnWidth"
+        android:gravity="center"
+        android:id="@+id/gridView1" />
 </LinearLayout>

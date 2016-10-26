@@ -22,6 +22,8 @@ using PrimusFlex.Mobile.Common;
 using Primusflex.Mobile.Common;
 using Newtonsoft.Json;
 using Primusflex.Mobile.Models;
+using Android.Views;
+using System.Collections;
 
 namespace Primusflex.Mobile
 {
@@ -58,6 +60,9 @@ namespace Primusflex.Mobile
             ActionBar.SetCustomView(Resource.Layout.action_bar);
             ActionBar.SetDisplayShowCustomEnabled(true);
 
+            LinearLayout history = (LinearLayout)FindViewById(Resource.Id.historyMenu);
+            history.Click += LoadHistory;
+
             SetContentView(Resource.Layout.Home);
 
             // get access token
@@ -80,6 +85,9 @@ namespace Primusflex.Mobile
             var updateMenu = FindViewById<LinearLayout>(Resource.Id.updateMenu);
             updateMenu.Selected = true;
 
+            CheckBox checkBox = FindViewById<CheckBox>(Resource.Id.checkBox1);
+            checkBox.CheckedChange += CheckBox_CheckedChange;
+
             CameraHelpers.CreateDirectoryForPictures();
 
             Button btnOpenCamera = FindViewById<Button>(Resource.Id.btnOpenCamera);
@@ -88,30 +96,92 @@ namespace Primusflex.Mobile
             Button btnRefresh = (Button)FindViewById(Resource.Id.btnRefresh);
             btnRefresh.Click += UpdateLastKitchenInfo;
 
+            Button btnHistory = FindViewById<Button>(Resource.Id.btnHistory);
+            btnHistory.Click += LoadHistory;
+
             EditText siteName = FindViewById<EditText>(Resource.Id.site);
             siteName.TextChanged += (sender, e) => TryToEnableCameraButton(sender, e); 
 
             EditText plotNumber = FindViewById<EditText>(Resource.Id.plot);
             plotNumber.TextChanged += (sender, e) => TryToEnableCameraButton(sender, e);
 
+            // Set spinners for Sites
+            IList sitesList = GetSiteList();
+
+            Spinner siteSpinner = FindViewById<Spinner>(Resource.Id.siteSpinner);
+            ArrayAdapter siteAdapter = new ArrayAdapter(this, Android.Resource.Layout.SimpleSpinnerDropDownItem, sitesList);
+            siteAdapter.SetDropDownViewResource(Android.Resource.Layout.SimpleSpinnerDropDownItem);
+            siteSpinner.Adapter = siteAdapter;
+            siteSpinner.Tag = "siteSpinner";
+
+            siteSpinner.ItemSelected += new EventHandler<AdapterView.ItemSelectedEventArgs>(SpinnerItemSelected);
+
             // Set spinner for kitchen models
 
-            Spinner spinner = FindViewById<Spinner>(Resource.Id.spinner1);
+            Spinner kitchenSpinner = FindViewById<Spinner>(Resource.Id.kitchenSpinner);
             ArrayAdapter adapter = new ArrayAdapter(this, Android.Resource.Layout.SimpleSpinnerDropDownItem, Constant.KITCHEN_MODELS);
             adapter.SetDropDownViewResource(Android.Resource.Layout.SimpleSpinnerDropDownItem);
-            spinner.Adapter = adapter;
-
-            // spinner default value
+            kitchenSpinner.Adapter = adapter;
+            kitchenSpinner.Tag = "kitchenSpinner";
+            
             kitchenModelName = Constant.KITCHEN_MODELS[0];
+            kitchenSpinner.ItemSelected += new EventHandler<AdapterView.ItemSelectedEventArgs>(SpinnerItemSelected);
 
-            // add spinner ItemSelected Event Handler
-            spinner.ItemSelected += new EventHandler<AdapterView.ItemSelectedEventArgs>(SpinnerItemSelected);
+
+            // Table
 
             table = this.FindViewById<TableLayout>(Resource.Id.tableLayout1);
 
             // TODO: Add last day uploads review
             AddLastKitchenInformation(userName);
             
+        }
+
+        private IList GetSiteList()
+        {
+            string uri = Constant.STORAGE_URL + "/GetSiteList";
+            HttpWebRequest request = WebRequest.Create(uri) as HttpWebRequest;
+            request.Headers.Add("Authorization", "Bearer " + accessToken);
+
+            using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
+            {
+                var stream = response.GetResponseStream();
+                StreamReader reader = new StreamReader(stream);
+                var responseFromServer = reader.ReadToEnd();
+                
+                return JsonConvert.DeserializeObject<List<string>>(responseFromServer);
+            }
+        }
+
+        private void CheckBox_CheckedChange(object sender, EventArgs e)
+        {
+            Spinner siteSpinner = FindViewById<Spinner>(Resource.Id.siteSpinner);
+            EditText siteEditText = FindViewById<EditText>(Resource.Id.site);
+            TextView checkBoxLabel = FindViewById<TextView>(Resource.Id.checkBoxLabel);
+
+            var checkBox = sender as CheckBox;
+            if (checkBox.Checked)
+            {
+                //Toast.MakeText(this, "checked", ToastLength.Short).Show();
+                siteSpinner.Visibility = ViewStates.Gone;
+                siteEditText.Visibility = ViewStates.Visible;
+                checkBoxLabel.Text = "Unchecked box to select site name from list.";
+            }
+            else
+            {
+                //Toast.MakeText(this, "UNchecked", ToastLength.Short).Show();
+                siteEditText.Visibility = ViewStates.Gone;
+                siteSpinner.Visibility = ViewStates.Visible;
+                checkBoxLabel.Text = "Site is not i the list.";
+            }
+        }
+
+        private void LoadHistory(object sender, EventArgs e)
+        {
+            Intent history = new Intent(this, typeof(HistoryActivity));
+            history.PutExtra("access_token", accessToken);
+            history.PutExtra("user_name", userName);
+            StartActivity(history);
         }
 
         private void UpdateLastKitchenInfo(Object sender, EventArgs args)
@@ -130,6 +200,8 @@ namespace Primusflex.Mobile
                 layoutParameters.SetMargins(5, 5, 5, 5);
                 layoutParameters.Weight = 1;
 
+                SetTableHeader(layoutParameters);
+
                 foreach (var lki in lastKitchenInfo)
                 {
                     TableRow tr = new TableRow(this);
@@ -139,13 +211,25 @@ namespace Primusflex.Mobile
                     site.Text = lki.SiteName;
                     tr.AddView(site);
 
+                    TextView space1 = new TextView(this);
+                    space1.Text = "     ";
+                    tr.AddView(space1);
+
                     TextView plotNo = new TextView(this);
                     plotNo.Text = lki.PlotNumber;
                     tr.AddView(plotNo);
 
+                    TextView space2 = new TextView(this);
+                    space2.Text = "     ";
+                    tr.AddView(space2);
+
                     TextView kitchenModel = new TextView(this);
                     kitchenModel.Text = lki.KitchenModel.ToString();
                     tr.AddView(kitchenModel);
+
+                    TextView space3 = new TextView(this);
+                    space3.Text = "     ";
+                    tr.AddView(space3);
 
                     TextView imgNo = new TextView(this);
                     imgNo.Text = lki.ImageNumber.ToString() + (lki.ImageNumber == 1 ? "pic" : "pics");
@@ -154,7 +238,86 @@ namespace Primusflex.Mobile
                     table.AddView(tr, new TableLayout.LayoutParams(TableLayout.LayoutParams.MatchParent,
                         TableLayout.LayoutParams.WrapContent));
                 }
+
+                // getting last kitchen images
+                
+                HttpWebRequest request = WebRequest.Create(Constant.STORAGE_URL + "/lastKitchenImages") as HttpWebRequest;
+                request.Headers.Add("Authorization", "Bearer " + accessToken);
+
+                HttpWebResponse response = request.GetResponse() as HttpWebResponse;
+                if (response.StatusCode == HttpStatusCode.OK)
+                {
+                    Stream responseStream = response.GetResponseStream();
+                    StreamReader reader = new StreamReader(responseStream);
+                    var responseFromServer = reader.ReadToEnd();
+                    
+                    List<ImageViewModel> images = JsonConvert.DeserializeObject<List<ImageViewModel>>(responseFromServer); 
+                    
+                    CloudStorageAccount account = StorageHelpers.StorageAccount(accessToken);
+
+                    CloudBlobClient blobClient = account.CreateCloudBlobClient();
+
+                    CloudBlobContainer container = blobClient.GetContainerReference(Constant.IMAGE_STORAGE_CONTAINER_NAME);
+                    
+                    Bitmap[] bitmaps = new Bitmap[images.Count];
+                    int position = 0;
+                    foreach (var image in images)
+                    {
+                        using (MemoryStream ms = new MemoryStream())
+                        {
+                            CloudBlockBlob blockBlob = container.GetBlockBlobReference(image.Name);
+                            blockBlob.DownloadToStream(ms);
+                            byte[] data = ms.ToArray();
+                            bitmaps[position] = BitmapHelpers.DecodeSampledBitmapFromByteArray(data, 100, 100);
+                        }
+                        position++;
+                    }
+
+                    var gridView = FindViewById<GridView>(Resource.Id.gridView1);
+                    gridView.Adapter = new ImageAdapter(this, bitmaps);
+                }
             }
+        }
+
+        private void SetTableHeader(TableLayout.LayoutParams layoutParameters)
+        {
+            TableRow tr = new TableRow(this);
+            tr.LayoutParameters = layoutParameters;
+
+            TextView site = new TextView(this);
+            site.SetTypeface(null, TypefaceStyle.Bold);
+            site.Text = "Site";
+            tr.AddView(site);
+
+            TextView space1 = new TextView(this);
+            space1.Text = "     ";
+            tr.AddView(space1);
+
+            TextView plotNo = new TextView(this);
+            plotNo.SetTypeface(null, TypefaceStyle.Bold);
+            plotNo.Text = "Plot";
+            tr.AddView(plotNo);
+
+            TextView space2 = new TextView(this);
+            space2.Text = "     ";
+            tr.AddView(space2);
+
+            TextView kitchenModel = new TextView(this);
+            kitchenModel.SetTypeface(null, TypefaceStyle.Bold);
+            kitchenModel.Text = "Kitchen";
+            tr.AddView(kitchenModel);
+
+            TextView space3 = new TextView(this);
+            space3.Text = "     ";
+            tr.AddView(space3);
+
+            TextView imgNo = new TextView(this);
+            imgNo.SetTypeface(null, TypefaceStyle.Bold);
+            imgNo.Text = "Pics";
+            tr.AddView(imgNo);
+
+            table.AddView(tr, new TableLayout.LayoutParams(TableLayout.LayoutParams.MatchParent,
+                TableLayout.LayoutParams.WrapContent));
         }
 
         private List<KitchenInfoModel> GetLastDayKitchenInfo(string username)
@@ -178,8 +341,20 @@ namespace Primusflex.Mobile
 
         private void SpinnerItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
         {
-            Spinner spn = (Spinner) sender;
-            kitchenModelName = spn.GetItemAtPosition(e.Position).ToString();
+            Spinner spinner = (Spinner) sender;
+            switch ((string)spinner.Tag)
+            {
+                case "siteSpinner":
+                    Toast.MakeText(this, "site", ToastLength.Short).Show();
+                    break;
+                case "kitchenSpinner":
+                    kitchenModelName = spinner.GetItemAtPosition(e.Position).ToString();
+                    Toast.MakeText(this, "kitchen", ToastLength.Short).Show();
+                    break;
+                default:
+                    break;
+            }
+            
         }
 
         public override void OnBackPressed()
@@ -219,7 +394,7 @@ namespace Primusflex.Mobile
             // Collect plot details
             siteName = FindViewById<EditText>(Resource.Id.site).Text;
             plotNumber = FindViewById<EditText>(Resource.Id.plot).Text;
-            picName = String.Format("img_sn{0}_pl{1}_m{2}_d{3}.jpg", siteName, plotNumber, kitchenModelName, DateTime.Now.ToString("yyyyMMddHHmmss"));
+            picName = String.Format("img_{0}.jpg", DateTime.Now.ToString("yyyyMMddHHmmss"));
             
             Intent intent = new Intent(MediaStore.ActionImageCapture);
             App.File = new Java.IO.File(App.Dir,picName);

@@ -14,6 +14,7 @@
 
   <!-- Texts -->
   <string name="check_net_text">Checking connection ...</string>
+  <string name="site_not_in_list">Site is not in the list.</string>
   
   <!-- Titles -->
   <string name="plot_details_title">PLOT DETAILS</string>
